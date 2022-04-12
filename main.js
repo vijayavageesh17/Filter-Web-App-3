@@ -1,0 +1,40 @@
+mouth_X=0;
+mouth_Y=0;
+
+function preload(){
+    mustache = loadImage("https://i.postimg.cc/7ZBcjDqp/clownnose.png");
+}
+
+function setup(){
+    canvas = createCanvas(300,300);
+    canvas.center();
+    video=createCapture(VIDEO);
+    video.size(300,300);
+    video.hide();
+
+    poseNet= ml5.poseNet(video, modelLoaded);
+    poseNet.on("pose",gotPoses);
+
+}
+
+function modelLoaded(){
+console.log("PoseNet is initiailized");
+}
+
+function gotPoses(results){
+    if(results.length>0){
+       console.log(results);
+       mouth_X=results[0].pose.mouth.x-10;
+       nose_Y=results[0].pose.mouth.y-10;
+       console.log("Mouth X = " + results[0].pose.mouth.x);
+       console.log("Mouth Y = " + results[0].pose.mouth.y);
+    }
+}
+
+function draw(){
+    image(video,0,0,300,300);
+    }
+
+function take_snapshot(){
+    save('My Filter Image');
+}
